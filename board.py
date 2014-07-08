@@ -159,32 +159,64 @@ class Board(object):
 		return v_player_dict
 
 	def chck_row_winner(self,p_board_dict):
-		v_row_num 	= '1'
-		v_col_num 	= 1
+		v_row_num 	= 1
 		v_empty_spc_cnt	= 0
-		v_dict_row = p_board_dict[v_row_num]
-		
-		v_playr1_cnt    = 0
-		v_playr2_cnt    = 0
+		v_plyr1_win_flg	= -1
+		v_plyr2_win_flg = -1
+		v_tie_flg	= -1
+		v_row_win_dict	= {}
 
-		while v_col_num <= self.__board_width:
-			v_val = v_dict_row[str(v_col_num)]
-			if  v_val == self.__playr1_symbol:
-				v_playr1_cnt = v_playr1_cnt +1
-			elif v_val == self.__playr2_symbol:
-				v_playr2_cnt = v_playr2_cnt +1
-			elif v_val == self.__empty_spc:
-				v_empty_spc_cnt = v_empty_spc_cnt+1
+		while v_row_num <= self.__board_height: 
+			v_dict_row = p_board_dict[str(v_row_num)]
+			v_col_num       = 1
+			v_playr1_cnt    = 0
+			v_playr2_cnt    = 0
+
+			while v_col_num <= self.__board_width:
+				v_val = v_dict_row[str(v_col_num)]
+				if  v_val == self.__playr1_symbol:
+					v_playr1_cnt = v_playr1_cnt +1
+				elif v_val == self.__playr2_symbol:
+					v_playr2_cnt = v_playr2_cnt +1
+				elif v_val == self.__empty_spc:
+					v_empty_spc_cnt = v_empty_spc_cnt+1
 			
-			v_col_num = v_col_num +1
+				if 	v_playr1_cnt == self.__board_width:
+					v_plyr1_win_flg = 0
+					v_col_num = self.__board_width +1
+					v_row_num = self.__board_height +1
+				elif	v_playr2_cnt == self.__board_width:
+					v_plyr2_win_flg = 0
+					v_col_num = self.__board_width +1
+					v_row_num = self.__board_height +1
+				else:
+					v_col_num = v_col_num +1
 		
-		print v_playr1_cnt
-		print v_playr2_cnt
-		print v_empty_spc_cnt
+			v_row_num = v_row_num +1
+
+		if v_empty_spc_cnt == 0 and v_plyr1_win_flg == -1 and v_plyr2_win_flg == -1:
+			v_tie_flg = 0		
+
+		v_row_win_dict['plyr1_win_flg']=v_plyr1_win_flg
+		v_row_win_dict['plyr2_win_flg']=v_plyr2_win_flg
+		v_row_win_dict['tie_flg']=v_tie_flg
+
+		return v_row_win_dict
 
 	def chk_game_over(self):
+		v_game_over_flg	= -1
+		v_game_over_msg	= "Keep Playing"
 		v_board_dict	= self.get_json('board')
-		self.chck_row_winner(v_board_dict)		
+		v_row_win_dict	= self.chck_row_winner(v_board_dict)		
+		if 	v_row_win_dict['plyr1_win_flg'] == 0:
+			v_game_over_flg = 0
+			v_game_over_msg = "Player 1 Wins!"
+		elif	v_row_win_dict['plyr2_win_flg'] == 0:
+			v_game_over_flg = 0
+			v_game_over_msg = "Player 2 Wins!"
+
+		print v_game_over_flg
+		print v_game_over_msg
 
 	def post_board(self,p_row,p_col):
 		v_board_dict	= self.get_json('board')
