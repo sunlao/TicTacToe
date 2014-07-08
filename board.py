@@ -1,4 +1,4 @@
-#!/usr/bin/python
+/usr/bin/python
 
 class Board(object):
 	
@@ -17,24 +17,29 @@ class Board(object):
 		except IOError:
 			self.get_new_board()
 
-		v_input_str = "A game exists.  Would you like to continue? (Y/N) "
-		v_continue_game = raw_input(v_input_str)
-		v_continue_game	= v_continue_game.upper()
-
-		if v_continue_game.upper()== 'N':
+		if 	v_game_dict['game status']=='Over':
 			self.get_new_board()
-		elif v_continue_game.upper() == 'Y':
-			print "Last Game Loaded"
-			self.print_board()
-	                v_last_player   = v_game_dict['last player']
-        	        v_turn_status   = v_game_dict['turn status']
-			v_player_dict	= self.get_player_dict(v_last_player,v_turn_status)
-	                v_player_no     = v_player_dict['player_no']
-                	v_player_symbol = self.get_player_symbol(v_player_no)
-                        v_input_str   = "Player %s please select a row and column to place your %s (i.e. 2,2) " %(v_player_no,v_player_symbol)
-                        self.print_input(v_input_str)
-		else:	
-			self.get_game_status()
+		else:
+			v_input_str = "A game exists.  Would you like to continue? (Y/N) "
+			v_continue_game = raw_input(v_input_str)
+			v_continue_game	= v_continue_game.upper()
+
+			if v_continue_game.upper()== 'N':
+				print "Lets start a new game!"
+				self.get_new_board()
+			elif v_continue_game.upper() == 'Y':
+				print "Last Game Loaded"
+				self.print_board()
+		                v_last_player   = v_game_dict['last player']
+        		        v_turn_status   = v_game_dict['turn status']
+				v_player_dict	= self.get_player_dict(v_last_player,v_turn_status)
+		                v_player_no     = v_player_dict['player_no']
+        	        	v_player_symbol = self.get_player_symbol(v_player_no)
+                	        v_input_str   = "Player %s please select a row and column to place your %s (i.e. 2,2) " %(v_player_no,v_player_symbol)
+	                        self.print_input(v_input_str)
+			else:	
+				print "Please enter a 'Y' to load previous game or a'N' to start a new game"
+				self.get_game_status()
 	
 	def get_new_board(self):
 		v_board_dict	= {}
@@ -135,9 +140,20 @@ class Board(object):
 		return v_player_symbol
 
 	def print_input(self,p_input_str):
-		v_row_col_str 	= input(p_input_str)
-		self.post_board(v_row_col_str[0],v_row_col_str[1])
-
+		try:
+			v_row_col_str 	= input(p_input_str)
+			self.post_board(v_row_col_str[0],v_row_col_str[1])
+		except:
+			print "Please try again with two valid numbers seperated by a comma"
+	               	v_game_dict     = self.get_json('game')
+        	       	v_last_player   = v_game_dict['last player']
+                	v_turn_status   = v_game_dict['turn status']
+	                v_player_dict   = self.get_player_dict(v_last_player,v_turn_status)
+                	v_player_no     = v_player_dict['player_no']
+	                v_player_symbol = self.get_player_symbol(v_player_no)
+                        v_input_str	= "Player %s please select a row and column to place your %s (i.e. 2,2) " %(v_player_no,v_player_symbol)
+                        self.print_input(v_input_str)
+		
 	def get_player_dict(self,p_last_player,p_turn_status):
                 if      p_last_player == 1 and p_turn_status == 'Move':
                         v_player_no             = 1
@@ -203,7 +219,70 @@ class Board(object):
 
 		return v_row_win_dict
 
-	def chk_game_over(self):
+	def chk_diag_lft_winner(self,p_board_dict):
+		v_row_num       	= 1
+		v_plyr1_win_flg 	= -1
+		v_plyr2_win_flg 	= -1
+		v_diag_lft_win_dict  	= {}
+		v_playr1_cnt		= 0
+		v_playr2_cnt		= 0
+
+		while v_row_num <= self.__board_height:
+			v_dict_row = p_board_dict[str(v_row_num)]
+			
+			v_val = v_dict_row[str(v_row_num)]
+
+			if 	v_val == self.__playr1_symbol:
+				v_playr1_cnt = v_playr1_cnt +1
+			elif 	v_val == self.__playr2_symbol:
+				v_playr2_cnt = v_playr2_cnt +1
+
+			v_row_num = v_row_num +1
+
+		if 	v_playr1_cnt == self.__board_height:
+			v_plyr1_win_flg = 0
+		elif 	v_playr2_cnt == self.__board_height:
+			v_plyr2_win_flg = 0
+	
+		v_diag_lft_win_dict['plyr1_win_flg']=v_plyr1_win_flg
+		v_diag_lft_win_dict['plyr2_win_flg']=v_plyr1_win_flg
+	
+		return v_diag_lft_win_dict
+
+        def chk_diag_rght_winner(self,p_board_dict):
+                v_row_num               = 1
+                v_plyr1_win_flg         = -1
+                v_plyr2_win_flg         = -1
+                v_diag_rght_win_dict     = {}
+                v_playr1_cnt            = 0
+                v_playr2_cnt            = 0
+
+                while v_row_num <= self.__board_height:
+                        v_dict_row = p_board_dict[str(v_row_num)]
+
+			v_col_key = (self.__board_width - v_row_num)+1
+                        v_val = v_dict_row[str(v_col_key)]
+
+                        if      v_val == self.__playr1_symbol:
+                                v_playr1_cnt = v_playr1_cnt +1
+                        elif    v_val == self.__playr2_symbol:
+                                v_playr2_cnt = v_playr2_cnt +1
+
+                        v_row_num = v_row_num +1
+
+                if      v_playr1_cnt == self.__board_height:
+                        v_plyr1_win_flg = 0
+                elif    v_playr2_cnt == self.__board_height:
+                        v_plyr2_win_flg = 0
+
+                v_diag_rght_win_dict['plyr1_win_flg']=v_plyr1_win_flg
+                v_diag_rght_win_dict['plyr2_win_flg']=v_plyr1_win_flg
+
+                return v_diag_rght_win_dict
+
+
+	def get_game_over_dict(self):
+		game_over_dict = {}
 		v_game_over_flg	= -1
 		v_game_over_msg	= "Keep Playing"
 		v_board_dict	= self.get_json('board')
@@ -214,9 +293,30 @@ class Board(object):
 		elif	v_row_win_dict['plyr2_win_flg'] == 0:
 			v_game_over_flg = 0
 			v_game_over_msg = "Player 2 Wins!"
+		else:
+			v_diag_lft_win_dict = self.chk_diag_lft_winner(v_board_dict)
+			if      v_diag_lft_win_dict['plyr1_win_flg'] == 0:
+				v_game_over_flg = 0
+				v_game_over_msg = "Player 1 Wins!"
+			elif	v_diag_lft_win_dict['plyr2_win_flg'] == 0:
+				v_game_over_flg = 0
+				v_game_over_msg = "Player 2 Wins!"
+			else:
+				v_diag_rght_win_dict = self.chk_diag_rght_winner(v_board_dict)
+				if 	v_diag_rght_win_dict['plyr1_win_flg'] == 0:
+					v_game_over_flg = 0
+					v_game_over_msg = "Player 1 Wins!"
+				elif	v_diag_rght_win_dict['plyr2_win_flg'] == 0:
+					v_game_over_flg = 0
+					v_game_over_msg = "Player 2 Wins!"
+				elif	v_row_win_dict['tie_flg'] == 0:
+					v_game_over_flg = 0
+					v_game_over_msg = "The game is a draw"
+		
+		game_over_dict['game_over_flg']=v_game_over_flg
+		game_over_dict['game_over_msg']=v_game_over_msg
 
-		print v_game_over_flg
-		print v_game_over_msg
+		return game_over_dict
 
 	def post_board(self,p_row,p_col):
 		v_board_dict	= self.get_json('board')
@@ -243,8 +343,14 @@ class Board(object):
 				self.write_json('board',v_board_dict)
 				self.write_json('game',v_game_dict)
 				self.print_board()
-				v_input_str   = "Player %s please select a row and column to place your %s (i.e. 2,2) " %(v_next_player_no,v_next_player_symbol)
-		                self.print_input(v_input_str)
+				v_game_over_dict = self.get_game_over_dict()
+				if 	v_game_over_dict['game_over_flg'] == -1:				
+					v_input_str   = "Player %s please select a row and column to place your %s (i.e. 2,2) " %(v_next_player_no,v_next_player_symbol)
+			                self.print_input(v_input_str)
+				else:
+					v_game_dict['game status']='Over'		
+					self.write_json('game',v_game_dict)
+					print v_game_over_dict['game_over_msg']
 			else:
 				v_input_str = "Player %s please select an unused space " %(v_player_no)
 				self.print_input(v_input_str)	
@@ -252,5 +358,5 @@ class Board(object):
 			v_input_str = "Player %s please use a Row value between 1 and %s " %(v_player_no,self.__board_height)
 			self.print_input(v_input_str)
 		elif v_chk_val == -2:
-			v_input_str = "Player %s please use a Col value between 1 and %s " %(v_player_no,self.__board_width)
+			v_input_str = "Player %s please use a Column value between 1 and %s " %(v_player_no,self.__board_width)
 			self.print_input(v_input_str)
