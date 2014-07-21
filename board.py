@@ -245,7 +245,7 @@ class Board(object):
 			v_plyr2_win_flg = 0
 	
 		v_diag_lft_win_dict['plyr1_win_flg']=v_plyr1_win_flg
-		v_diag_lft_win_dict['plyr2_win_flg']=v_plyr1_win_flg
+		v_diag_lft_win_dict['plyr2_win_flg']=v_plyr2_win_flg
 	
 		return v_diag_lft_win_dict
 
@@ -276,10 +276,41 @@ class Board(object):
                         v_plyr2_win_flg = 0
 
                 v_diag_rght_win_dict['plyr1_win_flg']=v_plyr1_win_flg
-                v_diag_rght_win_dict['plyr2_win_flg']=v_plyr1_win_flg
+                v_diag_rght_win_dict['plyr2_win_flg']=v_plyr2_win_flg
 
                 return v_diag_rght_win_dict
 
+	def chk_col_winner(self,p_board_dict):
+		v_col_num		= 1
+		v_win_flg		= -1
+		v_plyr1_win_flg 	= -1
+                v_plyr2_win_flg 	= -1
+		v_col_winner_dict	= {}
+		while v_col_num <= self.__board_width and v_win_flg == -1:
+			v_row_num	= 1
+			v_playr1_cnt    = 0
+			v_playr2_cnt    = 0
+			while v_row_num <= self.__board_height:
+				v_dict_row = p_board_dict[str(v_row_num)]
+				v_val = v_dict_row[str(v_col_num)]
+				if      v_val == self.__playr1_symbol:
+					v_playr1_cnt = v_playr1_cnt +1
+				elif    v_val == self.__playr2_symbol:
+					v_playr2_cnt = v_playr2_cnt +1
+				v_row_num = v_row_num +1
+			if      v_playr1_cnt == self.__board_height:
+				v_plyr1_win_flg = 0
+				v_win_flg	= 0
+			elif    v_playr2_cnt == self.__board_height:
+				v_plyr2_win_flg = 0
+				v_win_flg       = 0
+			
+			v_col_num	= v_col_num +1	
+
+		v_col_winner_dict['plyr1_win_flg']=v_plyr1_win_flg
+		v_col_winner_dict['plyr2_win_flg']=v_plyr2_win_flg			
+			
+		return v_col_winner_dict
 
 	def get_game_over_dict(self):
 		game_over_dict = {}
@@ -309,10 +340,19 @@ class Board(object):
 				elif	v_diag_rght_win_dict['plyr2_win_flg'] == 0:
 					v_game_over_flg = 0
 					v_game_over_msg = "Player 2 Wins!"
-				elif	v_row_win_dict['tie_flg'] == 0:
-					v_game_over_flg = 0
-					v_game_over_msg = "The game is a draw"
-		
+				else:
+	
+					v_col_winner_dict = self.chk_col_winner(v_board_dict)
+
+					if	v_col_winner_dict['plyr1_win_flg'] == 0:
+						v_game_over_flg = 0
+						v_game_over_msg = "Player 1 Wins!"
+					elif	v_col_winner_dict['plyr2_win_flg'] == 0:
+						v_game_over_flg = 0
+						v_game_over_msg = "Player 2 Wins!"
+					elif	v_row_win_dict['tie_flg'] == 0:
+						v_game_over_flg = 0
+						v_game_over_msg = "The game is a draw"
 		game_over_dict['game_over_flg']=v_game_over_flg
 		game_over_dict['game_over_msg']=v_game_over_msg
 
@@ -360,3 +400,4 @@ class Board(object):
 		elif v_chk_val == -2:
 			v_input_str = "Player %s please use a Column value between 1 and %s " %(v_player_no,self.__board_width)
 			self.print_input(v_input_str)
+
