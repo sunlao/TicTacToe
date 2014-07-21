@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 class Board(object):
-	
+
 	def __init__(self):
 		self.board_file_nm	= 'board.json'
 		self.game_file_nm	= 'game.json'
@@ -37,10 +37,10 @@ class Board(object):
         	        	v_player_symbol = self.get_player_symbol(v_player_no)
                 	        v_input_str   = "Player %s please select a row and column to place your %s (i.e. 2,2) " %(v_player_no,v_player_symbol)
 	                        self.print_input(v_input_str)
-			else:	
+			else:
 				print "Please enter a 'Y' to load previous game or a'N' to start a new game"
 				self.get_game_status()
-	
+
 	def get_new_board(self):
 		v_board_dict	= {}
 		v_game_dict	= {}
@@ -73,7 +73,7 @@ class Board(object):
 		self.print_input(v_input_str)
 
 	def write_json(self,p_type,p_dict):
-		import json	
+		import json
 		if p_type == 'board':
 			v_file_nm = self.board_file_nm
 		elif    p_type == 'game':
@@ -125,10 +125,10 @@ class Board(object):
 		if self.chk_row_col(p_row,p_col) == 0:
 			v_row_dict	= v_board_dict[str(p_row)]
 			v_val 		= v_row_dict[str(p_col)]
-		else: 
+		else:
 			v_val = -1
 
-		return v_val 
+		return v_val
 
 	def get_player_symbol(self,p_player_no):
 		if 	p_player_no == 1:
@@ -153,7 +153,7 @@ class Board(object):
 	                v_player_symbol = self.get_player_symbol(v_player_no)
                         v_input_str	= "Player %s please select a row and column to place your %s (i.e. 2,2) " %(v_player_no,v_player_symbol)
                         self.print_input(v_input_str)
-		
+
 	def get_player_dict(self,p_last_player,p_turn_status):
                 if      p_last_player == 1 and p_turn_status == 'Move':
                         v_player_no             = 1
@@ -167,14 +167,14 @@ class Board(object):
                 elif    p_last_player == 2 and p_turn_status == 'Done':
                         v_player_no             = 1
                         v_next_player_no        = 2
-		
+
 		v_player_dict ={}
 		v_player_dict['player_no']=v_player_no
 		v_player_dict['next_player_no']=v_next_player_no
-	
+
 		return v_player_dict
 
-	def chck_row_winner(self,p_board_dict):
+	def chk_row_winner(self,p_board_dict):
 		v_row_num 	= 1
 		v_empty_spc_cnt	= 0
 		v_plyr1_win_flg	= -1
@@ -182,7 +182,7 @@ class Board(object):
 		v_tie_flg	= -1
 		v_row_win_dict	= {}
 
-		while v_row_num <= self.__board_height: 
+		while v_row_num <= self.__board_height:
 			v_dict_row = p_board_dict[str(v_row_num)]
 			v_col_num       = 1
 			v_playr1_cnt    = 0
@@ -196,7 +196,7 @@ class Board(object):
 					v_playr2_cnt = v_playr2_cnt +1
 				elif v_val == self.__empty_spc:
 					v_empty_spc_cnt = v_empty_spc_cnt+1
-			
+
 				if 	v_playr1_cnt == self.__board_width:
 					v_plyr1_win_flg = 0
 					v_col_num = self.__board_width +1
@@ -207,11 +207,11 @@ class Board(object):
 					v_row_num = self.__board_height +1
 				else:
 					v_col_num = v_col_num +1
-		
+
 			v_row_num = v_row_num +1
 
 		if v_empty_spc_cnt == 0 and v_plyr1_win_flg == -1 and v_plyr2_win_flg == -1:
-			v_tie_flg = 0		
+			v_tie_flg = 0
 
 		v_row_win_dict['plyr1_win_flg']=v_plyr1_win_flg
 		v_row_win_dict['plyr2_win_flg']=v_plyr2_win_flg
@@ -229,7 +229,7 @@ class Board(object):
 
 		while v_row_num <= self.__board_height:
 			v_dict_row = p_board_dict[str(v_row_num)]
-			
+
 			v_val = v_dict_row[str(v_row_num)]
 
 			if 	v_val == self.__playr1_symbol:
@@ -243,10 +243,10 @@ class Board(object):
 			v_plyr1_win_flg = 0
 		elif 	v_playr2_cnt == self.__board_height:
 			v_plyr2_win_flg = 0
-	
+
 		v_diag_lft_win_dict['plyr1_win_flg']=v_plyr1_win_flg
 		v_diag_lft_win_dict['plyr2_win_flg']=v_plyr2_win_flg
-	
+
 		return v_diag_lft_win_dict
 
         def chk_diag_rght_winner(self,p_board_dict):
@@ -304,20 +304,20 @@ class Board(object):
 			elif    v_playr2_cnt == self.__board_height:
 				v_plyr2_win_flg = 0
 				v_win_flg       = 0
-			
-			v_col_num	= v_col_num +1	
+
+			v_col_num	= v_col_num +1
 
 		v_col_winner_dict['plyr1_win_flg']=v_plyr1_win_flg
-		v_col_winner_dict['plyr2_win_flg']=v_plyr2_win_flg			
-			
+		v_col_winner_dict['plyr2_win_flg']=v_plyr2_win_flg
+
 		return v_col_winner_dict
 
-	def get_game_over_dict(self):
+	def get_game_status_dict(self):
 		game_over_dict = {}
 		v_game_over_flg	= -1
 		v_game_over_msg	= "Keep Playing"
 		v_board_dict	= self.get_json('board')
-		v_row_win_dict	= self.chck_row_winner(v_board_dict)		
+		v_row_win_dict	= self.chk_row_winner(v_board_dict)
 		if 	v_row_win_dict['plyr1_win_flg'] == 0:
 			v_game_over_flg = 0
 			v_game_over_msg = "Player 1 Wins!"
@@ -341,7 +341,7 @@ class Board(object):
 					v_game_over_flg = 0
 					v_game_over_msg = "Player 2 Wins!"
 				else:
-	
+
 					v_col_winner_dict = self.chk_col_winner(v_board_dict)
 
 					if	v_col_winner_dict['plyr1_win_flg'] == 0:
@@ -367,7 +367,7 @@ class Board(object):
 		v_player_dict 		= self.get_player_dict(v_last_player,v_turn_status)
 		v_player_no 		= v_player_dict['player_no']
 		v_next_player_no	= v_player_dict['next_player_no']
-		
+
 		v_player_symbol 	= self.get_player_symbol(v_player_no)
 		v_next_player_symbol 	= self.get_player_symbol(v_next_player_no)
 
@@ -383,17 +383,17 @@ class Board(object):
 				self.write_json('board',v_board_dict)
 				self.write_json('game',v_game_dict)
 				self.print_board()
-				v_game_over_dict = self.get_game_over_dict()
-				if 	v_game_over_dict['game_over_flg'] == -1:				
+				v_game_over_dict = self.get_game_status_dict()
+				if 	v_game_over_dict['game_over_flg'] == -1:
 					v_input_str   = "Player %s please select a row and column to place your %s (i.e. 2,2) " %(v_next_player_no,v_next_player_symbol)
 			                self.print_input(v_input_str)
 				else:
-					v_game_dict['game status']='Over'		
+					v_game_dict['game status']='Over'
 					self.write_json('game',v_game_dict)
 					print v_game_over_dict['game_over_msg']
 			else:
 				v_input_str = "Player %s please select an unused space " %(v_player_no)
-				self.print_input(v_input_str)	
+				self.print_input(v_input_str)
 		elif v_chk_val == -1:
 			v_input_str = "Player %s please use a Row value between 1 and %s " %(v_player_no,self.__board_height)
 			self.print_input(v_input_str)
