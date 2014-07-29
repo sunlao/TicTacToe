@@ -364,12 +364,12 @@ class Board(object):
 		v_last_player	= v_game_dict['last player']
 		v_turn_status	= v_game_dict['turn status']
 
-		v_player_dict 		= self.get_player_dict(v_last_player,v_turn_status)
-		v_player_no 		= v_player_dict['player_no']
-		v_next_player_no	= v_player_dict['next_player_no']
+		v_player_dict 		    = self.get_player_dict(v_last_player,v_turn_status)
+		v_player_no 		    = v_player_dict['player_no']
+		v_next_player_no	    = v_player_dict['next_player_no']
 
-		v_player_symbol 	= self.get_player_symbol(v_player_no)
-		v_next_player_symbol 	= self.get_player_symbol(v_next_player_no)
+		v_player_symbol 	    = self.get_player_symbol(v_player_no)
+		v_next_player_symbol    = self.get_player_symbol(v_next_player_no)
 
 		v_chk_val = self.chk_row_col(p_row,p_col)
 		if v_chk_val == 0:
