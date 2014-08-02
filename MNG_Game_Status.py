@@ -157,7 +157,7 @@ class MNG_Game_Status(object):
         game_status_dict = {}
         v_game_over_flg = -1
         v_game_over_msg = "Keep Playing"
-        v_board_dict    = self.__json_obj.get_json('board')
+        v_board_dict    = self.__json_obj.get_dict('board')
         v_row_win_dict  = self.chk_row_winner(v_board_dict)
         if  v_row_win_dict['plyr1_win_flg'] == 0:
             v_game_over_flg = 0

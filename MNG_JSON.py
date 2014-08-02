@@ -22,7 +22,7 @@ class MNG_JSON(object):
         file_obj.write(json.dumps(p_dict))
         file_obj.close
 
-    def get_json(self,p_type):
+    def get_dict(self,p_type):
 
         if      p_type == 'board':
             v_file_nm = self.__board_file_nm
@@ -31,6 +31,6 @@ class MNG_JSON(object):
         file_obj = open(v_file_nm,'r')
         v_json_str = file_obj.read()
         file_obj.close
-        v_json_obj = json.loads(v_json_str)
+        v_json_dict = json.loads(v_json_str)
 
-        return v_json_obj
+        return v_json_dict

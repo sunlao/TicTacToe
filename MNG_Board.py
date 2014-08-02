@@ -47,7 +47,7 @@ class MNG_Board(object):
         self.print_board()
 
     def print_board(self):
-        v_board_dict = self.__json_obj.get_json('board')
+        v_board_dict = self.__json_obj.get_dict('board')
         v_height_loop   = 0
         while v_height_loop <= self.__board_height:
             v_dict_row  = v_board_dict[str(v_height_loop)]
@@ -61,15 +61,15 @@ class MNG_Board(object):
             v_height_loop = v_height_loop+1
 
     def get_board_value(self,p_row,p_col):
-        v_board_dict = self.__json_obj.get_json('board')
+        v_board_dict = self.__json_obj.get_dict('board')
         v_row_dict  = v_board_dict[str(p_row)]
         v_val       = v_row_dict[str(p_col)]
 
         return v_val
 
     def post_board(self,p_row,p_col):
-        v_board_dict        = self.__json_obj.get_json('board')
-        v_game_dict         = self.__json_obj.get_json('game')
+        v_board_dict        = self.__json_obj.get_dict('board')
+        v_game_dict         = self.__json_obj.get_dict('game')
         v_last_player       = v_game_dict['last player']
         v_turn_status       = v_game_dict['turn status']
         v_player_dict       = self.__player_obj.get_player_dict(v_last_player,v_turn_status)
