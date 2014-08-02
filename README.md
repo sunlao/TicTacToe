@@ -5,14 +5,14 @@ Python Kata
 Build a Tic Tac Toe Game
 
 *Executable
-Play.py
+-Play.py
 
 *Functions
-MNG_Board.py
-MNG_Game_Play.py
-MNG_Game_Status.py
-MNG_Player.py
+-MNG_Board.py
+-MNG_Game_Play.py
+-MNG_Game_Status.py
+-MNG_Player.py
 
 *Utility
-MNG_JSON.py
-Config.py
+-MNG_JSON.py
+-Config.py
