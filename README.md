@@ -9,7 +9,7 @@ TickTackToe
   * exe_game             - Executes game
   * start_new_game       - Starts new game
   * chk_input_valid      - Check input values are valid
-  * input_move           - Mangage input of moves from players 
+  * mng_input_move       - Mangage input of moves from players 
   * chk_game_over        - Checks if game is over or should continue
 * MNG_Board.py
   * get_new_board        - Get new board from a JSON file
@@ -29,7 +29,7 @@ TickTackToe
 ### Utility
 * MNG_JSON.py
   * write_json           - Create a JSON file from a dictionary by file name
-  * get_json             - Get a dictionary from a JSON file by file name
+  * get_dict             - Get a dictionary from a JSON file by file name
 * Config.py
-  * get_dict             - get a configuration dictionary for app
+  * get_dict             - get a configuration dictionary for an app
   * get_value            - get a value by a key from configuration dictionary
