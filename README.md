@@ -1,8 +1,5 @@
 TickTackToe
 ===========
-Python Kata
-
-Build a Tic Tac Toe Game
 
 ### Execute Game
 * Play.py - Starts or recovers last unfinished game
