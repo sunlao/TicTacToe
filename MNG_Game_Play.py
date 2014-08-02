@@ -46,7 +46,7 @@ class MNG_Game_Play(object):
                 v_player_no     = v_player_dict['player_no']
                 v_player_symbol = self.get_player_symbol(v_player_no)
                 v_input_str     = "Player %s please select a row and column to place your %s (i.e. 2,2) " %(v_player_no,v_player_symbol)
-                self.input_move(v_input_str)
+                self.mng_input_move(v_input_str)
             else:
                 print "Please enter a 'Y' to load previous game or a'N' to start a new game"
                 self.exe_game()
@@ -54,7 +54,7 @@ class MNG_Game_Play(object):
     def start_new_game(self):
         self.__board_obj.get_new_board()
         v_input_str   = "Player 1 please select a row and column to place your %s (i.e. 2,2) " %(self.__playr1_symbol)
-        self.input_move(v_input_str)
+        self.mng_input_move(v_input_str)
 
     def chk_input_valid(self,p_row,p_col):
         if      p_row >= 1 and p_row <= self.__board_width and p_col >= 1 and p_col <= self.__board_height:
@@ -69,7 +69,7 @@ class MNG_Game_Play(object):
 
         return v_val
 
-    def input_move(self,p_input_str):
+    def mng_input_move(self,p_input_str):
         try:
             v_row_col_str   = input(p_input_str)
             v_chk_val = self.chk_input_valid(v_row_col_str[0],v_row_col_str[1])
@@ -87,7 +87,7 @@ class MNG_Game_Play(object):
                     v_input_str = "Player %s please use a Column value between 1 and %s " %(v_player_no,self.__board_width)
                 elif v_chk_val == -3:
                     v_input_str = "Player %s please select an unused space " %(v_player_no)
-                self.input_move(v_input_str)
+                self.mng_input_move(v_input_str)
         except:
             print "Please try again with two valid numbers seperated by a comma"
             v_game_dict     = self.__json_obj.get_json('game')
@@ -97,7 +97,7 @@ class MNG_Game_Play(object):
             v_player_no     = v_player_dict['player_no']
             v_player_symbol = self.__player_obj.get_player_symbol(v_player_no)
             v_input_str = "Player %s please select a row and column to place your %s (i.e. 2,2) " %(v_player_no,v_player_symbol)
-            self.input_move(v_input_str)
+            self.mng_input_move(v_input_str)
         self.chk_game_over()
 
     def chk_game_over(self):
@@ -110,7 +110,7 @@ class MNG_Game_Play(object):
             v_player_no        = v_player_dict['player_no']
             v_player_symbol    = self.__player_obj.get_player_symbol(v_player_no)
             v_input_str             = "Player %s please select a row and column to place your %s (i.e. 2,2) " %(v_player_no,v_player_symbol)
-            self.input_move(v_input_str)
+            self.mng_input_move(v_input_str)
         else:
             v_game_dict             = self.__json_obj.get_json('game')
             v_game_dict['game status']='Over'
