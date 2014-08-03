@@ -2,9 +2,9 @@ TickTackToe
 ===========
 
 ### Execute Game
-* Play.py - Starts or recovers last unfinished game
+* Play.py - Starts a new game or recovers last unfinished game
 
-### Functions
+### Game Functions
 * MNG_Game_Play.py 
   * exe_game             - Executes game
   * start_new_game       - Starts new game
