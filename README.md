@@ -2,7 +2,7 @@ TickTackToe
 ===========
 
 ### Execute Game
-* Play.py - Starts a new game or recovers last unfinished game
+* Exe_Tick_Tack_Toe.py   - Starts a new game or recovers last unfinished game
 
 ### Game Functions
 * MNG_Game_Play.py 
@@ -31,5 +31,7 @@ TickTackToe
   * write_json           - Create a JSON file from a dictionary by file name
   * get_dict             - Get a dictionary from a JSON file by file name
 * Config.py
-  * get_dict             - get a configuration dictionary for an app
+  * get_def_dict         - get default dictionary for app if JSON does not exist 
+  * get_dict             - get a configuration dictionary for app from JSON file or default dict
+  * post_config          - update config json file with new Key Value Pair
   * get_value            - get a value by a key from configuration dictionary
