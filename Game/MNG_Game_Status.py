@@ -182,9 +182,7 @@ class MNG_Game_Status(object):
                     v_game_over_flg = 0
                     v_game_over_msg = "Player 2 Wins!"
                 else:
-
                     v_col_winner_dict = self.chk_col_winner(v_board_dict)
-
                     if  v_col_winner_dict['plyr1_win_flg'] == 0:
                         v_game_over_flg = 0
                         v_game_over_msg = "Player 1 Wins!"

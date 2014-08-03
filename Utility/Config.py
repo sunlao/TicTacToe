@@ -15,7 +15,6 @@ class Config(object):
 'board_width':3,
 'board_file_nm':'board.json',
 'game_file_nm':'game.json',
-'app_dir':'default'
         }
 
         return v_config_dict
@@ -30,7 +29,7 @@ class Config(object):
 
         return v_dict
 
-    def post_key_pair(self,p_key,p_value):
+    def post_config(self,p_key,p_value):
         if  self.get_value(p_key)!=p_value:
             v_dict = self.get_dict()
             v_dict[p_key]=p_value
