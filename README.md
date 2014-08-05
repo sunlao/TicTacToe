@@ -1,8 +1,8 @@
-TickTackToe
+TicTacToe
 ==========
 
 ### Execute Game
-* Exe_Tick_Tack_Toe.py   - Starts a new game or recovers last unfinished game
+* Exe_Tic_Tac_Toe.py   - Starts a new game or recovers last unfinished game
 
 ### Game Functions
 * MNG_Game_Play.py 
