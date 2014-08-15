@@ -14,16 +14,14 @@ class MNG_JSON(object):
 
         v_json_str  = json.dumps(p_dict)
         v_path  = "%s/%s.json"  %(self.__path,p_file_nm)
-        file_obj = open(v_path,'w')
-        file_obj.write(json.dumps(p_dict))
-        file_obj.close
+        with open(v_path,'w') as file_obj:
+            file_obj.write(json.dumps(p_dict))
 
     def get_dict(self,p_file_nm):
 
         v_path  = "%s/%s.json"  %(self.__path,p_file_nm)
-        file_obj = open(v_path,'r')
-        v_json_str = file_obj.read()
-        file_obj.close
+        with open(v_path,'r') as file_obj:
+            v_json_str = file_obj.read()
         v_json_dict = json.loads(v_json_str)
 
         return v_json_dict

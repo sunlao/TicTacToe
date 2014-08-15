@@ -26,30 +26,30 @@ class MNG_Game_Play(object):
             v_game_dict = self.__json_obj.get_dict('game')
         except IOError:
             self.start_new_game()
-
-        if  v_game_dict['game status']=='Over':
-            self.start_new_game()
         else:
-            v_input_str = "A game exists.  Would you like to continue? (Y/N) "
-            v_continue_game = raw_input(v_input_str)
-            v_continue_game = v_continue_game.upper()
-
-            if v_continue_game.upper()== 'N':
-                print "Lets start a new game!"
+            if  v_game_dict['game status']=='Over':
                 self.start_new_game()
-            elif v_continue_game.upper() == 'Y':
-                print "Last Game Loaded"
-                self.print_board()
-                v_last_player   = v_game_dict['last player']
-                v_turn_status   = v_game_dict['turn status']
-                v_player_dict   = self.get_player_dict(v_last_player,v_turn_status)
-                v_player_no     = v_player_dict['player_no']
-                v_player_symbol = self.get_player_symbol(v_player_no)
-                v_input_str     = "Player %s please select a row and column to place your %s (i.e. 2,2) " %(v_player_no,v_player_symbol)
-                self.mng_input_move(v_input_str)
             else:
-                print "Please enter a 'Y' to load previous game or a'N' to start a new game"
-                self.exe_game()
+                v_input_str = "A game exists.  Would you like to continue? (Y/N) "
+                v_continue_game = raw_input(v_input_str)
+                v_continue_game = v_continue_game.upper()
+
+                if v_continue_game.upper()== 'N':
+                    print "Lets start a new game!"
+                    self.start_new_game()
+                elif v_continue_game.upper() == 'Y':
+                    print "Last Game Loaded"
+                    self.print_board()
+                    v_last_player   = v_game_dict['last player']
+                    v_turn_status   = v_game_dict['turn status']
+                    v_player_dict   = self.get_player_dict(v_last_player,v_turn_status)
+                    v_player_no     = v_player_dict['player_no']
+                    v_player_symbol = self.get_player_symbol(v_player_no)
+                    v_input_str     = "Player %s please select a row and column to place your %s (i.e. 2,2) " %(v_player_no,v_player_symbol)
+                    self.mng_input_move(v_input_str)
+                else:
+                    print "Please enter a 'Y' to load previous game or a'N' to start a new game"
+                    self.exe_game()
 
     def start_new_game(self):
         self.__board_obj.get_new_board()
