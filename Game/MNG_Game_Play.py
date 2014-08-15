@@ -73,6 +73,17 @@ class MNG_Game_Play(object):
         try:
             v_row_col_str   = input(p_input_str)
             v_chk_val = self.chk_input_valid(v_row_col_str[0],v_row_col_str[1])
+        except:
+            print "Please try again with two valid numbers seperated by a comma"
+            v_game_dict     = self.__json_obj.get_dict('game')
+            v_last_player   = v_game_dict['last player']
+            v_turn_status   = v_game_dict['turn status']
+            v_player_dict   = self.__player_obj.get_player_dict(v_last_player,v_turn_status)
+            v_player_no     = v_player_dict['player_no']
+            v_player_symbol = self.__player_obj.get_player_symbol(v_player_no)
+            v_input_str = "Player %s please select a row and column to place your %s (i.e. 2,2) " %(v_player_no,v_player_symbol)
+            self.mng_input_move(v_input_str)
+        else:
             if  v_chk_val == 0:
                 self.__board_obj.post_board(v_row_col_str[0],v_row_col_str[1])
             else:
@@ -88,17 +99,7 @@ class MNG_Game_Play(object):
                 elif v_chk_val == -3:
                     v_input_str = "Player %s please select an unused space " %(v_player_no)
                 self.mng_input_move(v_input_str)
-        except:
-            print "Please try again with two valid numbers seperated by a comma"
-            v_game_dict     = self.__json_obj.get_dict('game')
-            v_last_player   = v_game_dict['last player']
-            v_turn_status   = v_game_dict['turn status']
-            v_player_dict   = self.__player_obj.get_player_dict(v_last_player,v_turn_status)
-            v_player_no     = v_player_dict['player_no']
-            v_player_symbol = self.__player_obj.get_player_symbol(v_player_no)
-            v_input_str = "Player %s please select a row and column to place your %s (i.e. 2,2) " %(v_player_no,v_player_symbol)
-            self.mng_input_move(v_input_str)
-        self.chk_game_over()
+            self.chk_game_over()
 
     def chk_game_over(self):
         v_game_over_dict = self.__game_status_obj.get_game_status_dict()
