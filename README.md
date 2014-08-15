@@ -1,8 +1,10 @@
-TickTackToe
+TicTacToe
 ==========
 
+TicTacToe is traditionally a game for two players, X and O, who take turns marking the spaces in a 3×3 grid. The player who succeeds in placing three respective marks in a horizontal, vertical, or diagonal row wins the game.
+
 ### Execute Game
-* Exe_Tick_Tack_Toe.py   - Starts a new game or recovers last unfinished game
+* Exe_Tic_Tac_Toe.py   - Starts a new game or recovers last unfinished game
 
 ### Game Functions
 * MNG_Game_Play.py 
